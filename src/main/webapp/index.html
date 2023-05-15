@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Hinaufladen auf die Datenbank mit Vorname und Nachname</h1>
+<input id="vornameid">
+<input id="nachnameid">
+
+<button onclick="deFunktion()">push</button>
+
+<h1>suchen nach einem buchstaben und dies dan in einer Tabelle ausgeben</h1>
+<br/>
+<input id="search" >
+<button onclick="suchfunk()">suche nach irgendwas mit dem buchstaben</button>
+
+<table id="tableid">
+
+
+</table>
+
+<h1>nach id löschen von der Datenbank</h1>
+<input type="number" id="deleteid" >
+<button onclick="delfunk()">löscht noch der id</button>
+
+
+<script>
+
+function deFunktion(){
+        let xhr= new XMLHttpRequest();
+
+        let ttt= document.getElementById("vornameid").value;
+        let ttt2= document.getElementById("nachnameid").value;
+
+        xhr.open("POST", "http://localhost:8080/demo-1.0-SNAPSHOT/api/pat/"+ttt+"/"+ttt2, true);
+
+       // xhr.onload = function (){
+         //   let ausg= xhr.responseText;
+         //   let jsonausg= JSON.parse(ausg);
+
+         //   document.getElementById("vn").innerHTML = jsonausg.vorname;
+         //   document.getElementById("nn").innerHTML = jsonausg.nachname;
+
+
+
+       // }
+        xhr.send();
+
+    }
+
+    function suchfunk(){
+        let xhr= new XMLHttpRequest();
+
+        let suchnachwas= document.getElementById("search").value;
+
+        xhr.open("GET", "http://localhost:8080/demo-1.0-SNAPSHOT/api/pat/"+suchnachwas, true);
+
+        xhr.onload = function (){
+            let ausg= xhr.responseText;
+            let jsonausg= JSON.parse(ausg);
+
+            document.getElementById("tableid").innerHTML ="";
+            for (let i = 0; i < jsonausg.length; i++) {
+
+                document.getElementById("tableid").innerHTML += "<tr>\n" +
+                    "        <td>" + jsonausg[i].vorname + "</td>\n" + "<td>" + jsonausg[i].nachname + "</td>\n" + "</tr>";
+
+            }
+
+        }
+        xhr.send();
+
+    }
+    function delfunk(){
+        let xhr= new XMLHttpRequest();
+
+        let suchnachwas= document.getElementById("deleteid").value;
+
+        xhr.open("DELETE", "http://localhost:8080/demo-1.0-SNAPSHOT/api/pat/"+suchnachwas, true);
+
+
+        xhr.send();
+    }
+
+</script>
+
+</body>
+</html>
